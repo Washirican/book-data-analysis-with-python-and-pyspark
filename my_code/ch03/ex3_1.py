@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, split, explode, lower, regexp_extract
+from pyspark.sql.functions import col, split, explode, lower, regexp_extract, length
 
 spark = (SparkSession
 .builder
@@ -12,7 +12,6 @@ spark.sparkContext.setLogLevel("OFF")
 book = spark.read.text("./data/gutenberg_books/1342-0.txt")
 
 # book.printSchema()
-
 # book.show(10, truncate=False)
 
 lines = book.select(split(col("value"), ' ').alias("line"))
@@ -27,6 +26,10 @@ words_clean = words_lower.select(
 
 words_nonull = words_clean.filter(col("word") != "")
 
-groups = words_nonull.groupBy(col("word"))
+result = words_nonull.select(length(col("word")).alias("word_length")).groupby("word_length").count()
 
-result = groups.count()
+# groups = words_nonull.groupBy(col("word"))
+# result = groups.count()
+
+result.show(5
+)
