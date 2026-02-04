@@ -29,8 +29,8 @@ words_nonull = words_clean.filter(col("word") != "")
 results = words_nonull.select(length(col("word")).alias("word_length")).groupby("word_length").count()
 
 # groups = words_nonull.groupBy(col("word"))
-results = groups.count()
+#results = groups.count()
 results.show()
 
-results.write.csv("./data/simple_count.csv")
-
+results.write.mode("overwrite").csv("./data/simple_count.csv")
+results.coalesce(1).write.mode("overwrite").csv("./data/simple_count_single_partition.csv")
