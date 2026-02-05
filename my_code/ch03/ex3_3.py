@@ -11,7 +11,7 @@ spark.sparkContext.setLogLevel("OFF")
 
 # Transformations
 results = (
-    spark.read.text("./data/gutenberg_books/*.txt")
+    spark.read.text("./data/gutenberg_books/1342-0.txt")
     .select(F.split(F.col("value"), " ").alias("line"))
     .select(F.explode(F.col("line")).alias("word"))
     .select(F.lower(F.col("word")).alias("word"))
@@ -19,12 +19,8 @@ results = (
     .filter(F.col("word") != "")
     .groupby("word")
     .count()
+    .count()
 )
 
 # Actions
-results.orderBy("count", ascending=False).show(10)
-
-results.write.mode("overwrite").csv("./data/simple_count.csv")
-results.coalesce(1).write.mode("overwrite").csv(
-    "./data/simple_count_single_partition.csv"
-)
+print(results)
