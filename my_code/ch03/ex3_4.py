@@ -19,7 +19,7 @@ results = (
     .filter(F.col("word") != "")
     .groupby("word")
     .count()
-    .where(F.col("count") == 1 )
+    .where(F.col("count") == 1)
 )
 
 # Actions

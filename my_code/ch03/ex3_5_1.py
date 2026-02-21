@@ -17,7 +17,7 @@ results = (
     .select(F.lower(F.col("word")).alias("word"))
     .select(F.regexp_extract(F.col("word"), "[a-z]+", 0).alias("word"))
     .filter(F.col("word") != "")
-#    .groupby("word")
+    #    .groupby("word")
     .select(F.substring(F.col("word"), 1, 1).alias("first_letter"))
     .groupBy(F.col("first_letter"))
     .count()
