@@ -62,6 +62,7 @@ full_log = logs_and_channels.join(cd_category, "CategoryID", how="left").join(
     cd_program_class, "ProgramClassID", how="left"
 )
 
+# Calculate final result and show result
 full_log.groupby("LogIdentifierID").agg(
     F.sum(
         F.when(
