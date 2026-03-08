@@ -8,7 +8,7 @@ spark = (
     .getOrCreate()
 )
 
-spark.sparkContext.setLogLevel("OFF")
+# spark.sparkContext.setLogLevel("OFF")
 
 book = spark.read.text("./data/gutenberg_books/1342-0.txt")
 
@@ -41,3 +41,5 @@ results.write.mode("overwrite").csv("./data/simple_count.csv")
 results.coalesce(1).write.mode("overwrite").csv(
     "./data/simple_count_single_partition.csv"
 )
+
+spark.stop()
