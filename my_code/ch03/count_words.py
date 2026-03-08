@@ -4,6 +4,7 @@ from pyspark.sql.functions import col, split, explode, lower, regexp_extract, le
 spark = (
     SparkSession.builder.appName("Analyzing the vocabulary of Pride and Prejudice.")
     .config("spark.sql.repl.eagerEval.enabled", "True")
+    .master("local[*]")
     .getOrCreate()
 )
 

@@ -61,3 +61,21 @@ cd_program_class = spark.read.csv(
 full_log = logs_and_channels.join(cd_category, "CategoryID", how="left").join(
     cd_program_class, "ProgramClassID", how="left"
 )
+
+full_log.groupby("LogIdentifierID").agg(
+    F.sum(
+        F.when(
+            F.trim(F.col("ProgramClassCD")).isin(
+                ["COM", "PRC", "PGI", "PRO", "LOC", "SPO", "MER", "SOL"]
+            ),
+            F.col("duration_seconds"),
+        ).otherwise(0)
+    ).alias("duration_commercial"),
+    F.sum("duration_seconds").alias("duration_total"),
+).withColumn(
+    "commercial_ratio", F.col("duration_commercial") / F.col("duration_total")
+).orderBy(
+    "commercial_ratio", ascending=False
+).show(
+    1000, False
+)
